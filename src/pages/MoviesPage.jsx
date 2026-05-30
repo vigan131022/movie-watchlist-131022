@@ -25,6 +25,14 @@ function MoviesPage() {
     setForm(emptyForm)
   }
 
+  function toggleWatched(id) {
+    setMovies(prev => prev.map(m => m.id === id ? { ...m, watched: !m.watched } : m))
+  }
+
+  function deleteMovie(id) {
+    setMovies(prev => prev.filter(m => m.id !== id))
+  }
+
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Movies</h1>
@@ -69,13 +77,29 @@ function MoviesPage() {
 
       <ul className="space-y-4">
         {movies.map(movie => (
-          <li key={movie.id} className="border rounded p-4 bg-white shadow-sm">
-            <p className="font-bold text-lg">{movie.title}</p>
-            <p className="text-sm text-gray-600">Director: {movie.director}</p>
-            <p className="text-sm text-gray-600">Genre: {movie.genre}</p>
-            <p className="text-sm text-gray-600">
-              Status: {movie.watched ? 'Watched' : 'Not watched'}
-            </p>
+          <li key={movie.id} className="border rounded p-4 bg-white shadow-sm flex items-start justify-between">
+            <div>
+              <p className="font-bold text-lg">{movie.title}</p>
+              <p className="text-sm text-gray-600">Director: {movie.director}</p>
+              <p className="text-sm text-gray-600">Genre: {movie.genre}</p>
+              <p className="text-sm text-gray-600">
+                Status: {movie.watched ? 'Watched' : 'Not watched'}
+              </p>
+            </div>
+            <div className="flex gap-2 ml-4">
+              <button
+                onClick={() => toggleWatched(movie.id)}
+                className="text-sm bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+              >
+                {movie.watched ? 'Mark Unwatched' : 'Mark Watched'}
+              </button>
+              <button
+                onClick={() => deleteMovie(movie.id)}
+                className="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>
